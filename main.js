@@ -4,7 +4,7 @@ function $(selector) {
     return document.querySelector(selector);
 }
 
-function logEvents() {
+function logEventsAndCount() {
     let lastTenEntries = [];
     let firstInteractionId;
     const log = $('#event-log');
@@ -12,7 +12,13 @@ function logEvents() {
     const getInteractionNumber = (entry) => {
         // This code is an estimate until proper interactionCount is supported.
         return Math.round((entry.interactionId - firstInteractionId) / 7) + 1;
-    };
+    }
+
+    const updateCountDisplay = () => {
+        const interactionCountValueElement = $('#interaction-count-value');
+        if (interactionCountValueElement.innerHTML != performance.interactionCount)
+            interactionCountValueElement.innerHTML = performance.interactionCount;
+    }
 
     new PerformanceObserver((list) => {
         for (const entry of list.getEntries()) {
@@ -31,23 +37,13 @@ function logEvents() {
           </td>
         `;
                 log.prepend(tr);
+                updateCountDisplay();
             }
         }
     }).observe({ type: 'event', durationThreshold: MIN_DURATION_THRESHOLD });
 }
 
 function initialize() {
-
-    const updateCountDisplay = () => {
-        const interactionCountValueElement = $('#interaction-count-value');
-        if (interactionCountValueElement.innerHTML != performance.interactionCount)
-            interactionCountValueElement.innerHTML = performance.interactionCount;
-    }
-
-    // Initialize event listener for updating interaction count.
-    ['keydown', 'keyup', 'pointerdown', 'pointerup'].forEach((type) => {
-        addEventListener(type, updateCountDisplay, { passive: true });
-    });
 
     const block = (blockingTime = 0) => {
         const blockingStart = performance.now();
@@ -61,7 +57,7 @@ function initialize() {
         addEventListener(type, (event) => { block(MIN_DURATION_THRESHOLD) }, { passive: true });
     });
 
-    logEvents();
+    logEventsAndCount();
 }
 
 if (
