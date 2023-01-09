@@ -1,5 +1,3 @@
-const MIN_DURATION_THRESHOLD = 16;
-
 function $(selector) {
     return document.querySelector(selector);
 }
@@ -12,12 +10,6 @@ function logEventsAndCount() {
     const getInteractionNumber = (entry) => {
         // This code is an estimate until proper interactionCount is supported.
         return Math.round((entry.interactionId - firstInteractionId) / 7) + 1;
-    }
-
-    const updateCountDisplay = () => {
-        const interactionCountValueElement = $('#interaction-count-value');
-        if (interactionCountValueElement.innerHTML != performance.interactionCount)
-            interactionCountValueElement.innerHTML = performance.interactionCount;
     }
 
     new PerformanceObserver((list) => {
@@ -37,27 +29,46 @@ function logEventsAndCount() {
           </td>
         `;
                 log.prepend(tr);
-                updateCountDisplay();
             }
         }
-    }).observe({ type: 'event', durationThreshold: MIN_DURATION_THRESHOLD });
+    }).observe({ type: 'event', durationThreshold: 16 });
 }
 
 function initialize() {
 
-    const block = (blockingTime = 0) => {
+    const block16 = () => {
         const blockingStart = performance.now();
-        while (performance.now() < blockingStart + blockingTime) {
+        while (performance.now() < blockingStart + 16) {
             // Block...
         }
     }
 
-    // Initialize event listener blocking time.
-    ['keydown', 'keyup', 'pointerdown', 'pointerup', 'click', 'touchstart'].forEach((type) => {
-        addEventListener(type, (event) => { block(MIN_DURATION_THRESHOLD) }, { passive: true });
-    });
+    const updateHandlerState = () => {
+        const shouldEnable = $('#enableHandlers').checked;
+        ['keydown', 'keyup', 'pointerdown', 'pointerup', 'click', 'touchstart'].forEach((type) => {
+            if (shouldEnable) {
+                addEventListener(type, block16, { passive: true });
+            }
+            else {
+                removeEventListener(type, block16, { passive: true });
+            }
+        });
+    }
+
+    const repeatCountDisplayUpdate = () => {
+        const interactionCountValueElement = $('#interaction-count-value');
+        if (interactionCountValueElement.innerHTML != performance.interactionCount) {
+            interactionCountValueElement.innerHTML = performance.interactionCount;
+        }
+        setTimeout(repeatCountDisplayUpdate, 50);
+    }
+
+    // add config box handler
+    $('#enableHandlers').addEventListener('click', updateHandlerState);
 
     logEventsAndCount();
+
+    repeatCountDisplayUpdate();
 }
 
 if (
