@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>InteractionCount ⚡ Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="styles.css" />
+    <meta name="og:title" content="Interaction Count ⚡ Live Demo">
+    <meta name="og:type" content="website">
+    <meta name="og:url" content="https://zuoaoyuan.github.io/interaction-count/">
+    <meta name="og:image" content="https://zuoaoyuan.github.io/interaction-count/preview.png">
+    <meta name="og:description"
+        content="A live demo to help you test Performance Interaction Count API. Start interacting and watch the values update!">
+    <meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body>
+    <header>
+        <h1>Interaction Count ⚡ Live Demo</h1>
+    </header>
+    <main>
+        <div class="feature">
+            <div class="feature-box">
+                <div class="metric">
+                    <label class="metric-title">
+                        Interaction Count
+                    </label>
+                    <span id="interaction-count-value">0</span>
+                </div>
+            </div>
+        </div>
+
+        <h2>Start typing...</h2>
+        <div class="control">
+            <textarea id="textarea" rows="4"></textarea>
+        </div>
+        <h2>Event log <em>(descending order)</em></h2>
+        <div class="table-container">
+            <table class="event-table">
+                <thead>
+                    <tr>
+                        <th>Interaction No.</th>
+                        <th>Event Type</th>
+                        <th class="value">Duration</th>
+                        <th class="value">Timestamp</th>
+                    </tr>
+                </thead>
+                <tbody id="event-log"></tbody>
+            </table>
+        </div>
+    </main>
+    <footer>
+        Created by
+        <a href="https://github.com/zuoaoyuan">Aoyuan Zuo</a> &nbsp;⚡&nbsp;
+        Inspiration from <a href="https://inp-demo.glitch.me/">INP demo</a> by
+        <a href="https://twitter.com/philwalton">Philip Walton</a>
+    </footer>
+    <script type="module" src="main.js"></script>
+</body>
+
+</html>
