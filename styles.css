@@ -21,6 +21,8 @@ header {
 }
 
 footer {
+    position: fixed;
+    bottom: 0;
     border-top: 1px solid #eee;
     padding: var(--space);
 }
@@ -115,7 +117,7 @@ main {
 
 .table-container {
     overflow: auto;
-    height: 19.5em;
+    height: 36.5em;
     position: relative;
 }
 
