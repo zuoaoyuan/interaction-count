@@ -14,22 +14,28 @@ function logEventsAndCount() {
 
     new PerformanceObserver((list) => {
         for (const entry of list.getEntries()) {
-            if (entry.interactionId || entry.name == 'touchstart') {
-                if (!firstInteractionId && entry.interactionId) {
-                    firstInteractionId = entry.interactionId;
-                }
-                const interactionNumber = entry.interactionId ? getInteractionNumber(entry) : 'N/A';
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
+            // exclude non-related annoying noise events
+            const entry_type_ignore_list = ["pointerenter", "pointerover", "pointerout", "pointerleave", "mouseover", "mouseout"];
+            if (entry_type_ignore_list.includes(entry.name)) continue;
+
+            if (!firstInteractionId && entry.interactionId) {
+                firstInteractionId = entry.interactionId;
+            }
+            const interactionNumber = entry.interactionId ? getInteractionNumber(entry) : 'N/A';
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
           <td>${interactionNumber}</td>
           <td>${entry.name}</td>
+          <td class="value">${entry.pointerId}</td>
+          <td class="value">${entry.lastId}</td>
+          <td class="value">${entry.mapHasId}</td>
+          <td class="value">${entry.timerActive}</td>
           <td class="value">${entry.duration}</td>
           <td class="value">
-            <code>${new Date().toISOString().slice(11)}</code>
+            <code>${new Date().toISOString().slice(17, 23)}</code>
           </td>
         `;
-                log.prepend(tr);
-            }
+            log.prepend(tr);
         }
     }).observe({ type: 'event', durationThreshold: 16 });
 }
