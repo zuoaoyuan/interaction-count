@@ -61,6 +61,20 @@ function initialize() {
         });
     }
 
+    const preventDefault = (event) => {
+        event.preventDefault();
+    }
+
+    const updateTouchStartPreventDefault = () => {
+        const shouldEnable = $('#touchStartPreventDefault').checked;
+        if (shouldEnable) {
+            addEventListener('touchstart', preventDefault, { passive: false });
+        }
+        else {
+            removeEventListener('touchstart', preventDefault, { passive: false });
+        }
+    }
+
     const repeatCountDisplayUpdate = () => {
         const interactionCountValueElement = $('#interaction-count-value');
         if (interactionCountValueElement.innerHTML != performance.interactionCount) {
@@ -71,6 +85,7 @@ function initialize() {
 
     // add config box handler
     $('#enableHandlers').addEventListener('click', updateHandlerState);
+    $('#touchStartPreventDefault').addEventListener('click', updateTouchStartPreventDefault);
 
     logEventsAndCount();
 
