@@ -51,7 +51,7 @@ function initialize() {
 
     const updateHandlerState = () => {
         const shouldEnable = $('#enableHandlers').checked;
-        ['keydown', 'keyup', 'pointerdown', 'pointerup', 'pointercancel', 'click', 'touchstart'].forEach((type) => {
+        ['keydown', 'keyup', 'pointerdown', 'pointerup', 'pointercancel', 'click', 'touchstart', 'touchend', 'contextmenu'].forEach((type) => {
             if (shouldEnable) {
                 addEventListener(type, block16, { passive: true });
             }
