@@ -3,7 +3,6 @@ function $(selector) {
 }
 
 function logEventsAndCount() {
-    let lastTenEntries = [];
     let firstInteractionId;
     const log = $('#event-log');
 
@@ -26,10 +25,6 @@ function logEventsAndCount() {
             tr.innerHTML = `
           <td>${interactionNumber}</td>
           <td>${entry.name}</td>
-          <td class="value">${entry.pointerId}</td>
-          <td class="value">${entry.lastId}</td>
-          <td class="value">${entry.mapHasId}</td>
-          <td class="value">${entry.timerActive}</td>
           <td class="value">${entry.duration}</td>
           <td class="value">
             <code>${new Date().toISOString().slice(17, 23)}</code>
@@ -51,7 +46,8 @@ function initialize() {
 
     const updateHandlerState = () => {
         const shouldEnable = $('#enableHandlers').checked;
-        ['keydown', 'keyup', 'pointerdown', 'pointerup', 'pointercancel', 'click', 'touchstart', 'touchend', 'contextmenu'].forEach((type) => {
+        const entry_type_add_listener_list = ['pointerdown', 'pointerup', 'pointercancel', 'click', 'touchstart', 'touchend', 'contextmenu', 'gotpointercapture', 'lostpointercapture', 'keydown', 'keyup', 'keypress', 'beforeinput', 'input', 'compositionstart', 'compositionupdate', 'compositionend'];
+        entry_type_add_listener_list.forEach((type) => {
             if (shouldEnable) {
                 addEventListener(type, block16, { passive: true });
             }
