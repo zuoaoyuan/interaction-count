@@ -25,6 +25,7 @@ function logEventsAndCount() {
             tr.innerHTML = `
           <td>${interactionNumber}</td>
           <td>${entry.name}</td>
+          <td class="value">${entry.pointerId}</td>
           <td class="value">${entry.duration}</td>
           <td class="value">
             <code>${new Date().toISOString().slice(17, 23)}</code>
